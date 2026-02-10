@@ -150,7 +150,7 @@
             noBtn.style.top = y + 'px';
         
             // Grow the Yes button
-            yesScale += 0.45;
+            yesScale += 0.3;
             yesBtn.style.transform = `scale(${yesScale})`;
         
             noAttempts++;
@@ -164,7 +164,7 @@
             } else if (noAttempts >= 4) {
                 currentEmoji = '💧';
                 gif.src = "https://media.tenor.com/ikTQ-pi_GyMAAAAi/cat-cry-kitten-cry.gif";
-                text.innerText = "Em oi... 🥺"; // 
+                text.innerText = "Em ơi... 🥺"; // 
                 document.body.style.backgroundColor = "#d1d9e6";
             } else {
                 gif.src = "https://media1.tenor.com/m/kZrteNCDoHAAAAAC/cat-cat-turning-head.gif";
@@ -183,7 +183,7 @@
                 <div class="gif-container">
                     <img src="https://media1.tenor.com/m/fz4_irvGQlcAAAAd/besito-catlove.gif" alt="Kissing Cats">
                 </div>
-                <h1>Yay! Best Valentine's ever! 🥰</h1>
+                <h1>Yay! Best Valentine's ever! 🥰 Anh yêu em ❤️</h1>
             `;
             
             setInterval(createParticle, 60);
