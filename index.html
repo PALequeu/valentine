@@ -16,16 +16,34 @@
             font-family: 'Arial', sans-serif;
             text-align: center;
             overflow: hidden;
+            transition: background-color 1s ease;
+        }
+
+        /* Particle Animation */
+        .particle {
+            position: fixed;
+            top: -10vh;
+            font-size: 20px;
+            user-select: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
         }
 
         .container {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             padding: 30px;
             border-radius: 30px;
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
             max-width: 400px;
             width: 90%;
             z-index: 10;
+            position: relative;
         }
 
         .gif-container img {
@@ -88,6 +106,25 @@
     <script>
         let yesScale = 1;
         let noAttempts = 0;
+        let currentEmoji = '❤️';
+        let isRainy = false;
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.innerHTML = currentEmoji;
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDuration = Math.random() * 2 + 2 + 's';
+            particle.style.opacity = Math.random();
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 5000);
+        }
+
+        // Start creating particles
+        let particleInterval = setInterval(createParticle, 300);
 
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
@@ -98,7 +135,6 @@
             // Move the button
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
@@ -107,19 +143,28 @@
             yesScale += 0.4;
             yesBtn.style.transform = `scale(${yesScale})`;
 
-            // Track attempts
             noAttempts++;
 
-            // Logic for the 4th attempt
+            // The Sad Transition
             if (noAttempts >= 4) {
-                gif.src = "https://media.tenor.com/ikTQ-pi_GyMAAAAi/cat-cry-kitten-cry.gif";
-                text.innerText = "Please... don't say no 🥺";
-            } else if (noAttempts > 0) {
+                currentEmoji = '💧';
+                if (!isRainy) {
+                    document.body.style.backgroundColor = "#d1d9e6"; // Turn background grey-ish
+                    gif.src = "https://media.tenor.com/ikTQ-pi_GyMAAAAi/cat-cry-kitten-cry.gif";
+                    text.innerText = "Please... don't say no 🥺";
+                    isRainy = true;
+                }
+            } else {
                 text.innerText = "Are you sure? 🤔";
             }
         }
 
         function celebrate() {
+            // Stop current rain/hearts
+            clearInterval(particleInterval);
+            currentEmoji = '❤️';
+            document.body.style.backgroundColor = "#fff0f3"; // Back to pink
+            
             const mainContent = document.getElementById('main-content');
             mainContent.innerHTML = `
                 <div class="gif-container">
@@ -127,6 +172,9 @@
                 </div>
                 <h1>Yay! I love you! 🥰 See you on the 14th!</h1>
             `;
+            
+            // Celebration explosion of hearts
+            setInterval(createParticle, 50);
         }
     </script>
 </body>
