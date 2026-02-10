@@ -85,8 +85,18 @@
             transition: transform 0.1s ease-in-out;
         }
 
-        #yesBtn { background-color: #ff4d6d; color: white; }
-        #noBtn { background-color: #adb5bd; color: white; position: relative; }
+        #yesBtn {
+    background-color: #ff4d6d;
+    color: white;
+    z-index: 1; /* Lower priority */
+        }
+        
+        #noBtn {
+            background-color: #adb5bd;
+            color: white;
+            position: relative;
+            z-index: 9999; /* This ensures it stays on top of the growing Yes button */
+        }
     </style>
 </head>
 <body>
@@ -126,34 +136,38 @@
             const gif = document.getElementById('display-gif');
             const text = document.getElementById('text-prompt');
             const container = document.getElementById('main-content');
-
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+        
+            // Calculate safe boundaries so the button stays on screen
+            const padding = 20;
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+            
+            const x = Math.max(padding, Math.random() * maxX);
+            const y = Math.max(padding, Math.random() * maxY);
             
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
-
+        
+            // Grow the Yes button
             yesScale += 0.45;
             yesBtn.style.transform = `scale(${yesScale})`;
-
+        
             noAttempts++;
-
+        
+            // Vietnamese Text Updates
             if (noAttempts >= 7) {
-                // Extreme Sadness
                 gif.src = "https://media1.tenor.com/m/GinH9HwdzqYAAAAC/cat-crying-cat.gif";
                 text.innerText = "Thôi mà, quá đáng lắm luôn á! 😭😭😭";
                 container.style.animation = "shake 0.5s infinite";
-                document.body.style.backgroundColor = "#9da6b5"; // Even darker
+                document.body.style.backgroundColor = "#9da6b5";
             } else if (noAttempts >= 4) {
-                // Sadness starts
                 currentEmoji = '💧';
                 gif.src = "https://media.tenor.com/ikTQ-pi_GyMAAAAi/cat-cry-kitten-cry.gif";
-                text.innerText = "Em oi... 🥺";
+                text.innerText = "Đi mà... đừng từ chối mà 🥺"; // "Please... don't refuse"
                 document.body.style.backgroundColor = "#d1d9e6";
             } else {
-                gif.src = "https://media1.tenor.com/m/2PP4ln_-L4IAAAAd/cat-side-eye-side-eye.gif";
-                text.innerText = "Why bro?? 🤔";
+                text.innerText = "Em chắc chưa? 🤔"; // "Are you sure?"
             }
         }
 
