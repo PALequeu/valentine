@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine?</title>
+    <title>Be My Valentine? 🐾</title>
     <style>
         body {
             display: flex;
@@ -12,66 +12,75 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #ffdae0;
-            font-family: 'Arial', sans-serif;
+            background-color: #ffe4e1;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
+            overflow: hidden;
         }
 
         .container {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
+            max-width: 400px;
+            z-index: 10;
         }
 
         h1 {
-            color: #d63384;
-            font-size: 2rem;
+            color: #ff4d6d;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
         }
 
-        .buttons {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-        }
-
-        #yesBtn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        #noBtn {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 10px;
-            cursor: pointer;
-            position: relative;
+        .gif-container {
+            margin-bottom: 20px;
         }
 
         .gif-container img {
-            width: 200px;
-            border-radius: 10px;
+            width: 100%;
+            max-width: 250px;
+            border-radius: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            height: 100px; /* Space for the growing button */
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        #noBtn {
+            background-color: #888;
+            color: white;
+            position: relative;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="gif-container">
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIyc3J0ZzZ3NmZ3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3JpZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Cute GIF">
+    <div class="container" id="mainContainer">
+        <div class="gif-container" id="gifWrap">
+            <img src="https://media1.tenor.com/m/al46bR7GclwAAAAC/peach-goma.gif" alt="Cute Cat">
         </div>
-        <h1>Will you be my Valentine? ❤️</h1>
+        <h1 id="questionText">Will you be my Valentine? ❤️</h1>
         <div class="buttons">
             <button id="yesBtn" onclick="celebrate()">Yes</button>
             <button id="noBtn" onmouseover="moveButton()">No</button>
@@ -79,30 +88,64 @@
     </div>
 
     <script>
-        let yesSize = 1.2;
+        let yesScale = 1;
+        let noClicks = 0;
 
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
             
-            // Randomly move the "No" button
+            // Move No Button
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
             
-            noBtn.style.position = 'absolute';
+            noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
 
-            // Make the "Yes" button grow every time they try to hit "No"
-            yesSize += 0.2;
-            yesBtn.style.transform = `scale(${yesSize})`;
+            // Make Yes Button bigger
+            yesScale += 0.4;
+            yesBtn.style.transform = `scale(${yesScale})`;
+            
+            // Add a little sass
+            noClicks++;
+            if(noClicks > 5) {
+                document.getElementById('questionText').innerText = "You're trying too hard to say no... 🥺";
+            }
         }
 
         function celebrate() {
-            document.querySelector('.container').innerHTML = `
-                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIyc3J0ZzZ3NmZ3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3JpZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26BRv0ThflsHCqfJA/giphy.gif" width="200">
-                <h1>Yay! See you on the 14th! 🥰</h1>
+            const container = document.getElementById('mainContainer');
+            container.innerHTML = `
+                <div class="gif-container">
+                    <img src="https://media1.tenor.com/m/77987G_6p98AAAAC/peach-goma-peach-and-goma.gif" alt="Happy Cat">
+                </div>
+                <h1>Knew you'd say yes! 🥰 See you then!</h1>
             `;
+            
+            // Simple confetti effect (emoji style)
+            for(let i=0; i<20; i++) {
+                createHeart();
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.zIndex = '1';
+            heart.style.transition = 'transform 3s linear, opacity 3s';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.transform = `translateY(-110vh) rotate(${Math.random() * 360}deg)`;
+                heart.style.opacity = '0';
+            }, 100);
+
+            setTimeout(() => heart.remove(), 3000);
         }
     </script>
 </body>
